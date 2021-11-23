@@ -1,2 +1,9 @@
+# Ignore skaffold and docker files
+skaffold.yaml
+skaffold/*
+.dockerignore
+Dockerfile
+
+# Ignore user-specific files not needed in remote environment
 .git
 .idea

@@ -7,11 +7,18 @@ build:
   - image: alpine
     custom:
       buildCommand: echo
+      # Needed in order to make skaffold file sync respect .dockerignore
+      dependencies:
+        dockerfile:
+          path: Dockerfile
     context: .
     sync:
-      manual:
-        - src: '**/*'
-          dest: /src/test
+      # Needed in order to make skaffold file sync respect .dockerignore
+      infer:
+        - '**/*'
+#      manual:
+#      - src: '**/*'
+#        dest: /src/test
 deploy:
   kubeContext: gke_kubeflow-platform_europe-west1-d_kf-test
   kubectl:

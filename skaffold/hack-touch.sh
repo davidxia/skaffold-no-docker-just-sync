@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 # This file is a hacky way of making skaffold do an initial sync of all relevant
-# files in the working directory.
+# files in the working directory. Skaffold will only sync files that have been modified.
 
 # Ignore skaffold files and .dockerignore
 find_cmd="find . \( -path ./skaffold.yaml -o -path ./skaffold -o -path ./.dockerignore"
