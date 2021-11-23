@@ -1,3 +1,44 @@
+## Update
+
+Removing image tag and digest from K8s YAML worked!
+Found a way to not have a Dockerfile!
+Found a hacky way using post-deploy hook and `touch` to force an initial sync of all relevant files.
+
+### TODOs and Questions
+
+What are the implications of `touch`ing everything?
+
+Is there a way to make skaffold sync to an existing Pod without redeploying and destroying it? Want to keep existing
+remote context whenever possible.
+
+skaffold is using `alpine:3.15.0-rc.4@sha256:fb150366bfb5a297a7f8852e0cec462a12f638374f8a04ad235c56a97e780add`. But I don't see that
+digest for the [3.15.0-rc.4 tag here](https://hub.docker.com/_/alpine?tab=tags). Any idea where that digest is coming
+from?
+
+Will the current skaffold.yaml have problems with future updates?
+
+If I restore the image tag and digest in my K8s YAML and
+run `skaffold dev --tag 3.15.0-rc.4 --digest-source none --cleanup=false` there's another error.
+Is there a way to make skaffold use the tag and digest in my K8s YAML?
+
+```
+skaffold dev --tag 3.15.0-rc.4 --digest-source none --cleanup=false
+
+Listing files to watch...
+ - alpine
+Tags used in deployment:
+Starting deploy...
+ - deployment.apps/dxia-test configured
+Waiting for deployments to stabilize...
+ - dxia:deployment/dxia-test is ready.
+Deployments stabilized in 3.849 seconds
+Press Ctrl+C to exit
+Watching for changes...
+WARN[0044] error adding dirty artifact to changeset: could not find latest tag for image alpine in builds: []  subtask=-1 task=DevLoop
+```
+
+## Original problem statement
+
 This repo provides a minimal repro of a skaffold file syncing issue I'm facing. I want skaffold to
 start a pre-built image and sync all local repo files to the remote container. I don't want it to
 build any image and don't want a local Docker daemon to be running. It'd be nice to not have to use

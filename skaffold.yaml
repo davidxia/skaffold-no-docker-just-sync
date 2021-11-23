@@ -7,15 +7,17 @@ build:
   - image: alpine
     custom:
       buildCommand: echo
-      dependencies:
-        dockerfile:
-          path: Dockerfile
     context: .
     sync:
-      infer:
-      - '**/*'
+      manual:
+        - src: '**/*'
+          dest: /src/test
 deploy:
-  kubeContext: my-kube-context
+  kubeContext: gke_kubeflow-platform_europe-west1-d_kf-test
   kubectl:
     manifests:
     - skaffold/deployment.yaml
+    hooks:
+      after:
+        - host:
+            command: [ "./skaffold/hack-touch.sh"]
