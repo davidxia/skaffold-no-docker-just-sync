@@ -1,0 +1,21 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: dxia
+  name: dxia-test
+spec:
+  selector:
+    matchLabels:
+      name: dxia-test
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        name: dxia-test
+    spec:
+      containers:
+      - name: dxia-test
+        image: alpine:3.15.0-rc.4@sha256:3eea5acfa729637baeedf1059a2a03d5a29356aac6baf65fea08762afa72321b
+        command: [ "/bin/sh", "-c", "--" ]
+        args: [ "while true; do sleep 30; done;" ]

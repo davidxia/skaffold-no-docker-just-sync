@@ -1,0 +1,21 @@
+apiVersion: skaffold/v2beta26
+kind: Config
+build:
+  local:
+    tryImportMissing: true
+  artifacts:
+  - image: alpine
+    custom:
+      buildCommand: echo
+      dependencies:
+        dockerfile:
+          path: Dockerfile
+    context: .
+    sync:
+      infer:
+      - '**/*'
+deploy:
+  kubeContext: my-kube-context
+  kubectl:
+    manifests:
+    - skaffold/deployment.yaml
